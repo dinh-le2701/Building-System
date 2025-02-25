@@ -16,6 +16,7 @@ jobs:
     defaults:
       run:
         shell: bash
+        working-directory: devops
     
     steps:
     # step 1: checkout the repository to the github action runner
