@@ -41,13 +41,69 @@ jobs:
     - name: Terraform Init
       run: terraform init
 
-    # step 5: Plan
-    - name: Terraform Plan
-      run: terraform plan
+    # step 5: validate
+    - name: Terraform Validate
+        run: terraform validate
 
-    # step 6: Apply
+    # step 6: Plan
+    - name: Terraform Plan
+      run: |
+        if aws s3 ls "s3://your-bucket-name" 2>&1 | grep -q 'NoSuchBucket'; then
+          echo "Bucket does not exist, proceeding with Terraform apply."
+          terraform apply -auto-approve
+        else
+          echo "Bucket already exists, skipping Terraform apply."
+        fi
+
+    # step 7: Apply
     - name: Terraform Apply
       run: terraform apply -auto-approve
+
+  # 2. fe job
+  frontend_react
+    name: 'Frontend CI'
+    runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: frontend
+    
+    steps:
+    # step 1: checkout repository
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # step 2: Setup Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+    
+    # step 3: Install dependencies
+    - name: Install dependencies
+      run: npm Install
+
+    # step 4: Lint Code
+    - name: Check Lint Code
+      run: npm run lint
+    
+    # step 5: Build project
+    - name: Build React project
+      run: npm run Build
+
+    # step 6: Upload Build Artifacts
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with: 
+        name: frontend-build
+        path: frontend/build
+
+    # step 7: Deploy to S3 bucket
+    - name: Deploy build to S3
+      run: |
+        aws s3 sync frontend/build s3://terraform-s3-bucket-building --delete
 
     
   
