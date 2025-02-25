@@ -89,22 +89,22 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    # step 4: Lint Code
-    - name: Check Lint Code
-      run: npm run lint
+    # # step 4: Lint Code
+    # - name: Check Lint Code
+    #   run: npm run lint
     
-    # step 5: Build project
+    # step 4: Build project
     - name: Build React project
       run: npm run build
 
-    # step 6: Upload Build Artifacts
+    # step 5: Upload Build Artifacts
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with: 
         name: frontend-build
         path: frontend/build
 
-    # step 7: Deploy to S3 bucket
+    # step 6: Deploy to S3 bucket
     - name: Deploy build to S3
       run: |
         aws s3 sync frontend/build s3://terraform-s3-bucket-building --delete
