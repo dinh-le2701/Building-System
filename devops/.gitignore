@@ -1,0 +1,9 @@
+# Bỏ qua thư mục Terraform
+.terraform/
+
+# Bỏ qua file trạng thái Terraform
+terraform.tfstate
+terraform.tfstate.backup
+
+# Bỏ qua file lock Terraform
+.terraform.lock.hcl

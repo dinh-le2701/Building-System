@@ -1,0 +1,54 @@
+name: 'CI/CD pipeline for project'
+on:
+  push: 
+    branches:
+      - main
+  pull_request:
+
+permission:
+  content: read
+
+jobs: 
+  # 1. devops job
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        shell: bash
+    
+    steps:
+    # step 1: checkout the repository to the github action runner
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # step 2: Setup Credentials
+    - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+    
+    # step 3: Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Teraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: latest
+
+    # step 4: Init
+    - name: Terraform Init
+      run: terraform init
+
+    # step 5: Plan
+    - name: Terraform Plan
+      run: terraform plan
+
+    # step 6: Apply
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+
+    
+  
