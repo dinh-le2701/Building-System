@@ -9,7 +9,7 @@ on:
 jobs: 
   # 1. devops job
   terraform:
-    name: 'Terraform'
+    name: 'Terraform Infrastructure'
     runs-on: ubuntu-latest
     environment: production
 
@@ -65,7 +65,7 @@ jobs:
 
   # 2. fe job
   frontend_react:
-    name: 'Frontend CI'
+    name: 'Frontend CI/CD'
     needs: terraform
     runs-on: ubuntu-latest
     environment: production
