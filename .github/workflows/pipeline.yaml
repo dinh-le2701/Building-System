@@ -66,6 +66,7 @@ jobs:
   # 2. fe job
   frontend_react:
     name: 'Frontend CI'
+    needs: devops
     runs-on: ubuntu-latest
     environment: production
 
