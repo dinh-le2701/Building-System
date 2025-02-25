@@ -98,14 +98,18 @@ jobs:
     - name: Build React project
       run: npm run build
 
-    # step 5: Upload Build Artifacts
+    # Step 5: Check if build exists
+    - name: Check if build exists
+      run: ls -la build  # ✅ Kiểm tra build có tồn tại không
+
+    # step 6: Upload Build Artifacts
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with: 
         name: frontend-build
-        path: frontend/build
+        path: build
 
-    # step 6: Deploy to S3 bucket
+    # step 7: Deploy to S3 bucket
     - name: Deploy build to S3
       run: |
         aws s3 sync frontend/build s3://terraform-s3-bucket-building --delete
