@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { Button, Table, Form, Container } from 'react-bootstrap';
 import { ReactNotifications, Store } from 'react-notifications-component';
