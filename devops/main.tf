@@ -12,7 +12,6 @@ resource "aws_s3_bucket" "building" {
 
   lifecycle {
     prevent_destroy = true
-    ignore_changes  = [tags]
   }
 }
 
