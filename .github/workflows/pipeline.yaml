@@ -100,7 +100,7 @@ jobs:
 
     # Step 5: Check if build exists
     - name: Check if build exists
-      run: ls -la build  # ✅ Kiểm tra build có tồn tại không
+      run: ls -la frontend/build || echo "Build folder not found!"  # ✅ Kiểm tra build có tồn tại không
 
     # step 6: Upload Build Artifacts
     - name: Upload build artifacts
@@ -109,10 +109,16 @@ jobs:
         name: frontend-build
         path: build
 
-    # step 7: Deploy to S3 bucket
+    # step 7: Deploy build lên S3
     - name: Deploy build to S3
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
-        aws s3 sync frontend/build s3://terraform-s3-bucket-building --delete
-
-    
+        if [ -d "build" ]; then
+          aws s3 sync build s3://terraform-s3-bucket-building --delete
+        else
+          echo "Build folder does not exist, skipping deployment"
+          exit 1
+        fi
   
