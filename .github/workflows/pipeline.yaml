@@ -43,7 +43,7 @@ jobs:
 
     # step 5: validate
     - name: Terraform Validate
-        run: terraform validate
+      run: terraform validate
 
     # step 6: Plan
     - name: Terraform Plan
