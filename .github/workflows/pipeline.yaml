@@ -5,8 +5,6 @@ on:
       - main
   pull_request:
 
-permission:
-  content: read
 
 jobs: 
   # 1. devops job
